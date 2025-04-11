@@ -7,6 +7,11 @@ describe("getCommitMeaning", () => {
 		["chore", { type: undefined }],
 		["chore: deps", { type: "chore" }],
 		["chore(deps): bump", { type: "chore" }],
+		["chore(deps): update dependency eslint-plugin-n to v17.17.0 ", "release"],
+		[
+			"chore(deps-minor): update dependency prettier from 3.2.5 to 3.5.3",
+			"release",
+		],
 		["docs", { type: undefined }],
 		["docs: bump", { type: "docs" }],
 		["docs: message", { type: "docs" }],
@@ -90,4 +95,22 @@ describe("getCommitMeaning", () => {
 	])("returns %j for %s", (input, expected) => {
 		expect(getCommitMeaning(input)).toEqual(expected);
 	});
+
+	it.each([
+		[
+			"chore(deps): update dependency eslint-plugin-n to v17.17.0",
+			{ type: "chore" },
+			/^chore: release v?\d+\.\d+\.\d+$/,
+		],
+		[
+			"chore(deps-minor): update dependency prettier from 3.2.5 to 3.5.3",
+			{ type: "chore" },
+			/^chore: release v?\d+\.\d+\.\d+$/,
+		],
+	])(
+		"commit %j returns %s with extra release commit tester %s ",
+		(input, expected, releaseCommitTester) => {
+			expect(getCommitMeaning(input, releaseCommitTester)).toEqual(expected);
+		},
+	);
 });

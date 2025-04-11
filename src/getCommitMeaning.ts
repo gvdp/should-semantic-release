@@ -4,10 +4,13 @@ const alwaysMeaningfulTypes = new Set(["feat", "fix", "perf"]);
 
 const alwaysIgnoredTypes = new Set(["docs", "refactor", "style", "test"]);
 
-const releaseCommitTester =
+const defaultReleaseCommitTester =
 	/^(?:chore(?:\(.*\))?:?)?\s*release|v?\d+\.\d+\.\d+/;
 
-export function getCommitMeaning(message: string) {
+export function getCommitMeaning(
+	message: string,
+	releaseCommitTester?: RegExp,
+) {
 	// Some types are always meaningful or ignored, regardless of potentially release-like messages
 	const { header, notes, type } = conventionalCommitsParser.sync(message, {
 		breakingHeaderPattern: /^(\w*)(?:\((.*)\))?!: (.*)$/,
@@ -30,7 +33,7 @@ export function getCommitMeaning(message: string) {
 	}
 
 	// If we've hit a release commit, we know we don't need to release
-	if (releaseCommitTester.test(message)) {
+	if ((releaseCommitTester ?? defaultReleaseCommitTester).test(message)) {
 		return "release";
 	}
 
