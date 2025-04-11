@@ -1,5 +1,5 @@
 {
-	"name": "should-semantic-release",
+	"name": "@gvdp/should-semantic-release",
 	"version": "0.3.3",
 	"description": "Checks whether a semantic release should be run for a repository. 💂",
 	"repository": {
@@ -81,8 +81,5 @@
 	"packageManager": "pnpm@10.7.0",
 	"engines": {
 		"node": ">=18"
-	},
-	"publishConfig": {
-		"provenance": true
 	}
 }
