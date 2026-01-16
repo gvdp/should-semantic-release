@@ -3,6 +3,7 @@ import { ShouldSemanticReleaseOptions } from "./types.js";
 import { execOrThrow } from "./utils.js";
 
 export async function shouldSemanticRelease({
+	releaseCommitTester,
 	verbose,
 }: ShouldSemanticReleaseOptions = {}) {
 	const rawHistory = await execOrThrow(`git log --pretty=format:"%s"`);
@@ -17,7 +18,7 @@ export async function shouldSemanticRelease({
 
 	for (const message of history) {
 		log(`Checking commit: ${message}`);
-		const commitInfo = getCommitMeaning(message);
+		const commitInfo = getCommitMeaning(message, releaseCommitTester);
 
 		switch (commitInfo.meaning) {
 			case "meaningful":

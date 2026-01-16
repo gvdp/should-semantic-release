@@ -17,4 +17,15 @@ describe("cli", () => {
 
 		expect(shouldSemanticRelease).toHaveBeenCalledWith({ verbose: true });
 	});
+
+	it("calls shouldSemanticRelease with releaseCommitTester when --releaseCommitTester is provided", async () => {
+		await shouldSemanticReleaseCLI([
+			`--releaseCommitTester="^chore: release v?\\d+\\.\\d+\\.\\d+$"`,
+		]);
+
+		expect(shouldSemanticRelease).toHaveBeenCalledWith({
+			releaseCommitTester: /^chore: release v?\d+\.\d+\.\d+$/,
+			verbose: false,
+		});
+	});
 });

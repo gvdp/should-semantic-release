@@ -27,6 +27,18 @@ describe("shouldSemanticRelease", () => {
 		expect(actual).toBe(true);
 	});
 
+	it("returns true when a meaningful commit is found after a dependency update commit", async () => {
+		mockExecOrThrow.mockResolvedValue(
+			`chore(deps): update dependency eslint-plugin-n to v17.17.0\nfeat: abc def`,
+		);
+
+		const actual = await shouldSemanticRelease({
+			releaseCommitTester: /^chore: release v?\d+\.\d+\.\d+$/,
+		});
+
+		expect(actual).toBe(true);
+	});
+
 	it("returns false when no commits are meaningful", async () => {
 		mockExecOrThrow.mockResolvedValue(`chore: abc`);
 
