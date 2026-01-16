@@ -18,19 +18,23 @@ export async function shouldSemanticRelease({
 
 	for (const message of history) {
 		log(`Checking commit: ${message}`);
-		const meaning = getCommitMeaning(message, releaseCommitTester);
+		const commitInfo = getCommitMeaning(message, releaseCommitTester);
 
-		switch (meaning) {
+		switch (commitInfo.meaning) {
 			case "meaningful":
-				log(`Found a meaningful commit. Returning true.`);
+				log(
+					`Found a meaningful commit of type ${commitInfo.type}. Returning true.`,
+				);
 				return true;
 
 			case "release":
-				log(`Found a release commit. Returning false.`);
+				log(
+					`Found a release commit of type ${commitInfo.type}. Returning false.`,
+				);
 				return false;
 
 			default:
-				log(`Found type ${meaning.type}. Continuing.`);
+				log(`Found type ${commitInfo.type}. Continuing.`);
 		}
 	}
 
