@@ -40,6 +40,10 @@ describe("getCommitMeaning", () => {
 		["chore(deps): release", { meaning: "release", type: "chore" }],
 		["chore(deps): release 1.2.3", { meaning: "release", type: "chore" }],
 		["chore(deps): release v1.2.3", { meaning: "release", type: "chore" }],
+		[
+			"chore(deps-major): update dependency to v1.2.3",
+			{ meaning: "meaningful", type: "chore" },
+		],
 		["chore!: message", { meaning: "meaningful", type: null }],
 		["docs!: message", { meaning: "meaningful", type: null }],
 		["chore!: release", { meaning: "meaningful", type: null }],
