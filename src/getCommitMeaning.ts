@@ -3,6 +3,7 @@ import conventionalCommitsParser from "conventional-commits-parser";
 const alwaysMeaningfulTypes = new Set(["feat", "fix", "perf"]);
 
 const alwaysIgnoredTypes = new Set(["docs", "refactor", "style", "test"]);
+const majorDepsTypes = new Set(["chore"]);
 
 const defaultReleaseCommitTester =
 	/^(?:chore(?:\(.*\))?:?)?\s*release|v?\d+\.\d+\.\d+/;
@@ -16,9 +17,12 @@ export function getCommitMeaning(
 	type?: null | string;
 } {
 	// Some types are always meaningful or ignored, regardless of potentially release-like messages
-	const { header, notes, type } = conventionalCommitsParser.sync(message, {
-		breakingHeaderPattern: /^(\w*)(?:\((.*)\))?!: (.*)$/,
-	});
+	const { header, notes, scope, type } = conventionalCommitsParser.sync(
+		message,
+		{
+			breakingHeaderPattern: /^(\w*)(?:\((.*)\))?!: (.*)$/,
+		},
+	);
 	if (
 		notes.some((note) => /^BREAKING[ -]CHANGE$/.exec(note.title)) ||
 		header?.match(/^BREAKING[ -]CHANGE(?: \([^)]+\))?:/)
@@ -28,6 +32,11 @@ export function getCommitMeaning(
 
 	if (type) {
 		if (alwaysMeaningfulTypes.has(type)) {
+			return { meaning: "meaningful", type };
+		}
+
+		// todo: make this scope configurable?
+		if (majorDepsTypes.has(type) && scope === "deps-major") {
 			return { meaning: "meaningful", type };
 		}
 
