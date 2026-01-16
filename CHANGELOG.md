@@ -1,5 +1,11 @@
 # Changelog
 
+# [0.5.0](https://github.com/JoshuaKGoldberg/should-semantic-release/compare/0.4.0...0.5.0) (2026-01-16)
+
+### Features
+
+- add option where deps-major commit is seen as meaningful so will trigger a release ([13d7a0d](https://github.com/JoshuaKGoldberg/should-semantic-release/commit/13d7a0d76c6639bf87525f8a570baf99d847ffcb))
+
 # 0.4.0 (2025-04-11)
 
 ### Bug Fixes
